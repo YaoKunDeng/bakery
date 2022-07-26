@@ -1,0 +1,28 @@
+version: 2.1
+executors:
+    maven:
+        docker:
+            - image: maven:3.8.6-sapmachine-17
+jobs:
+    build:
+        executor: maven
+        steps:
+            - checkout
+            - run: mvn compile
+
+    test:
+        executor: maven
+        steps:
+            - checkout
+            - run: mvn test
+
+workflows:
+    version: 2
+    build-test-deploy:
+        jobs:
+           - build
+           - test:
+                 requires:
+                     - build
+
+
